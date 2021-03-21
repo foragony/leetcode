@@ -8,15 +8,18 @@ class ListNode(object):
         self.val = val
         self.next = next
 
+
 class TreeNode(object):
     def __init__(self, val=0, left=None, right=None):
         self.val = val
         self.left = left
         self.right = right
 
+
 def print_hi(name):
     # 在下面的代码行中使用断点来调试脚本。
     print(f'Hi, {name}')  # 按 Ctrl+F8 切换断点。
+
 
 class Solution(object):
     def findLengthOfLCIS(self, nums):
@@ -48,8 +51,8 @@ class Solution(object):
         :rtype: List[int]
         """
         return_nums = [nums[0]]
-        for i in range(len(nums)-1):
-            return_nums.append(return_nums[-1]+nums[i+1])
+        for i in range(len(nums) - 1):
+            return_nums.append(return_nums[-1] + nums[i + 1])
         return return_nums
 
     def twoSum(self, nums, target):
@@ -60,10 +63,10 @@ class Solution(object):
         :rtype: List[int]
         """
         nums_len = len(nums)
-        for i in range(nums_len-1):
-            for j in range(nums_len-i-1):
-                if (nums[i]+nums[j+i+1]) == target:
-                    result = [i, i+j+1]
+        for i in range(nums_len - 1):
+            for j in range(nums_len - i - 1):
+                if (nums[i] + nums[j + i + 1]) == target:
+                    result = [i, i + j + 1]
                     return result
         return None
 
@@ -80,16 +83,16 @@ class Solution(object):
         if x < 0:
             flag = 1
             x = -x
-        while x//10 > 0:
+        while x // 10 > 0:
             num.append(x % 10)
-            x = x//10
+            x = x // 10
         num.append(x % 10)
         for a in num:
-            y += a * 10**(len(num)-i-1)
+            y += a * 10 ** (len(num) - i - 1)
             i += 1
         if flag == 1:
             y = -y
-        if y > 2**31 - 1 or y < -(2**31):
+        if y > 2 ** 31 - 1 or y < -(2 ** 31):
             return 0
         return y
 
@@ -127,7 +130,7 @@ class Solution(object):
         }
         y = 0
         for i in range(len(s)):
-            if i + 1 < len(s) and a[s[i]] < a[s[i+1]]:
+            if i + 1 < len(s) and a[s[i]] < a[s[i + 1]]:
                 y -= a[s[i]]
             else:
                 y += a[s[i]]
@@ -142,7 +145,7 @@ class Solution(object):
         if not strs: return ""
         s1 = min(strs)
         s2 = max(strs)
-        for i,x in enumerate(s1):
+        for i, x in enumerate(s1):
             if x != s2[i]:
                 return s2[:i]
         return s1
@@ -235,9 +238,9 @@ class Solution(object):
         :type needle: str
         :rtype: int
         """
-        h,n = len(needle),len(haystack)
+        h, n = len(needle), len(haystack)
         for i in range(n - h + 1):
-            if haystack[i:h+i] == needle:
+            if haystack[i:h + i] == needle:
                 return i
         else:
             return -1
@@ -259,6 +262,33 @@ class Solution(object):
             else:
                 right = mid - 1
         return left
+
+    def countAndSay(self, n):
+        """
+        38外观序列
+        :type n: int
+        :rtype: str
+        """
+        a = "1"
+        # b = ""
+        # if n == 1:
+        #     return a
+        for i in range(n - 1):
+            count = 0
+            pre = a[0]
+            b = ""
+            for x in a:
+                if x == pre:
+                    count += 1
+                else:
+                    b += str(count)
+                    b += pre
+                    pre = x
+                    count = 1
+            b += str(count)
+            b += pre
+            a = b
+        return a
 
     def maxSubArray(self, nums):
         """
@@ -315,7 +345,7 @@ class Solution(object):
         :type b: str
         :rtype: str
         """
-        return bin(int(a, 2)+int(b, 2))[2:]
+        return bin(int(a, 2) + int(b, 2))[2:]
 
     def mySqrt(self, x):
         """
@@ -326,7 +356,7 @@ class Solution(object):
         if x <= 1:
             return x
         i = 1
-        while i**2 <= x:
+        while i ** 2 <= x:
             i += 1
         return i - 1
 
@@ -404,7 +434,7 @@ class Solution(object):
         if p.val != q.val:
             return False
         else:
-            return  self.isSameTree(p.left, q.left) and self.isSameTree(p.right, q.right)
+            return self.isSameTree(p.left, q.left) and self.isSameTree(p.right, q.right)
 
     def isSymmetric(self, root):
         """
@@ -449,6 +479,38 @@ class Solution(object):
             max_depth += 1
             max_depth = max(self.deep(root.left, max_depth), self.deep(root.right, max_depth))
             return max_depth
+
+    def isBalanced(self, root):
+        """
+        110 平衡二叉树
+        :type root: TreeNode
+        :rtype: bool
+        """
+        if root is None:
+            return True
+        if self.isBalanced_callback(root):
+            # self.isBalanced(root.left)
+            # self.isBalanced(root.right)
+            if self.isBalanced(root.left) is False or self.isBalanced(root.right) is False:
+                return False
+        else:
+            return False
+        return True
+
+    def isBalanced_callback(self, root):
+        """
+        递归
+        :param root: TreeNode
+        :return: bool
+        """
+        if root is None:
+            return True
+        ldeep = self.maxDepth(root.left)
+        rdeep = self.maxDepth(root.right)
+        if (ldeep - rdeep) > 1 or (ldeep - rdeep) < -1:
+            return False
+        else:
+            return True
 
     def minDepth(self, root):
         """
@@ -514,10 +576,14 @@ class Solution(object):
                 flag = 1
         return result
 
+
 # 按间距中的绿色按钮以运行脚本。
 if __name__ == '__main__':
     # print_hi('PyCharm')
     s = Solution()
-    print(s.climbStairs(4))
+    print(s.countAndSay(5))
+    # a = "1"
+    # x = a[0]
+    # print(x)
 
 # 访问 https://www.jetbrains.com/help/pycharm/ 获取 PyCharm 帮助
